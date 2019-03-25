@@ -12,8 +12,12 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
     private BCryptPasswordEncoder encoder;
+
+    @Autowired
+    public void setEncoder(BCryptPasswordEncoder encoder) {
+        this.encoder = encoder;
+    }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -27,6 +31,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(encoder.encode("secret"))
                 .authorizedGrantTypes("authorization_code")
                 .scopes("user_info")
-                .autoApprove(true);
+                .autoApprove(true)
+                .redirectUris("http://localhost:8181/login");
     }
 }
